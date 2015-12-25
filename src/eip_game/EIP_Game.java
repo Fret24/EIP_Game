@@ -1,4 +1,7 @@
-
+/*
+    Copyright (C) 2015, Sam Cooper-Drake, all rights reserved.
+    Bush School EIP 2015/2016 Video Game Development Project
+*/
 package eip_game;
 
 import processing.core.*;

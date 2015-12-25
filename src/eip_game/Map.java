@@ -1,4 +1,9 @@
 /*
+    Copyright (C) 2015, Sam Cooper-Drake, all rights reserved.
+    Bush School EIP 2015/2016 Video Game Development Project
+*/
+
+/*
  * This is the model of the game map
  */
 package eip_game;
