@@ -66,7 +66,7 @@ public class EIP_Game extends PApplet {
         image(player, playerLoc.x, playerLoc.y);
         imageMode(CORNER);
 
-//        playerLoc.move(playerStep);
+        playerLoc.move(playerStep);
         
         int n = playerLoc.closeToNode(5);
         
