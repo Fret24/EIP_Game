@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015, Sam Cooper-Drake, all rights reserved.
+    Copyright (C) 2016, Sam Cooper-Drake, all rights reserved.
     Bush School EIP 2015/2016 Video Game Development Project
 */
 
@@ -93,6 +93,10 @@ public class Map {
             return Node.NO_PATH;
         }
         
+        /**
+         * moves location by distance pixels. Positive is from nodeA to nodeB.
+         * @param distance in pixels to move
+         */
         void move(float distance) {
             float f = distance/PApplet.dist(nodes[nodeA].x, nodes[nodeA].y, nodes[nodeB].x, nodes[nodeB].y);
             setPos(pos + f);
@@ -112,6 +116,13 @@ public class Map {
         }
     }
     
+    /**
+     * create location between nodeA and nodeB at relative pos. 
+     * @param nodeA
+     * @param nodeB
+     * @param pos
+     * @return 
+     */
     Location place(int nodeA, int nodeB, float pos) {
         return new Location(nodeA, nodeB, pos);
     }

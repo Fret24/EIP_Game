@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015, Sam Cooper-Drake, all rights reserved.
+    Copyright (C) 2016, Sam Cooper-Drake, all rights reserved.
     Bush School EIP 2015/2016 Video Game Development Project
 */
 package eip_game;
@@ -10,8 +10,7 @@ public class EIP_Game extends PApplet {
     Model model;
     PImage mapImage;
     PImage player;
-    Map.Location playerLoc;
-    float playerStep = 5f;
+    PImage hallMonitor;
 
     @Override
     public void settings() {
@@ -22,10 +21,8 @@ public class EIP_Game extends PApplet {
     public void setup() {
         model = new Model(width, height);
         mapImage = loadImage("GameScreen.png");
-        mapImage.resize(width, height);
-//        player = loadImage("Trump=Chump.png");
-        player = loadImage("skinsofHW.png");
-        playerLoc = model.map.place(0, 1, 0f);
+        hallMonitor = loadImage("hallmonitor.png");
+        player = loadImage("Trump=Chump.png");
     }
 
     void drawNeighbor(int i, int dir) {
@@ -60,31 +57,30 @@ public class EIP_Game extends PApplet {
 
     }
     
+    void drawGameObject(GameObject go, PImage img) {
+        image(img, go.location.x, go.location.y);
+    }
+    
+    void drawGameObjects() {
+        pushStyle();
+        imageMode(CENTER);
+        drawGameObject(model.player, player);
+        for (int i = 0; i < model.hallMonitors.length; ++i) {
+            drawGameObject(model.hallMonitors[i], hallMonitor);
+        }
+        popStyle();
+    }
+    
     @Override
     public void draw() {
-        background(11, 200, 254);
+        model.update();
+        
         image(mapImage, 0, 0);
-        drawMapGraph();
-        imageMode(CENTER);
-        image(player, playerLoc.x, playerLoc.y);
-        imageMode(CORNER);
+//        drawMapGraph();
 
-        playerLoc.move(playerStep);
+        drawGameObjects();
         
-        int n = playerLoc.closeToNode(5);
-        
-        if (n == playerLoc.nodeB) {
-            Map.Node node = model.map.nodes[n];
-            
-            while (true) {
-                int i = (int)(Math.random() * node.dirs.length);
-                if (node.dirs[i] != Map.Node.NO_PATH) {
-                    playerLoc = model.map.place(n, node.dirs[i], 0);
-                    break;
-                }
-            }
-            
-        }
+    
         
 //        if (keyPressed && key == 'g') {
 //            g.save("/Users/Sam/Desktop/GameScreen.png");
