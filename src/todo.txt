@@ -1,0 +1,27 @@
+add home work
+    add it to model
+    place in map
+    add to view
+    
+hall monitors
+    make and add proper visuals
+    add movement method 
+    
+interactions between game objects 
+    player-HW
+        HW gets collected
+            player counts HW
+            HW disappears 
+    player-HM
+        player gets "caught"
+            text saying "game over" appears and you have to restart
+controls
+    controls for player
+        "WASD" and arrow keys control where the player moves
+            he can only move on paths in between nodes
+
+sounds
+
+(optional)
+ sports drink 
+ animation of the character sprites  

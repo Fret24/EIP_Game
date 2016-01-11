@@ -45,4 +45,22 @@ public class Model {
             go.update();
         }
     }
+    
+    void moveUp() {
+        player.moveUp();
+    }   
+    
+    void moveDown() {
+        player.moveDown();
+    }
+    
+    void moveLeft() {
+        player.moveLeft();
+    }
+    
+    void moveRight() {
+        player.moveRight();
+    }
+    
 }
+ 

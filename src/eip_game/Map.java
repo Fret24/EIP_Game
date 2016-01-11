@@ -16,6 +16,13 @@ import processing.core.PApplet;
  */
 public class Map {
     
+    static final int 
+            Up = 0,
+            Down = 1,
+            Left = 2,
+            Right = 3;
+            
+    
     static class Node {
         static final int NO_PATH = -1;
         int x;
@@ -62,9 +69,7 @@ public class Map {
         int y;
         
         Location(int nodeA, int nodeB, float pos) {
-            this.nodeA = nodeA;
-            this.nodeB = nodeB;
-            setPos(pos);
+            set(nodeA, nodeB, pos);
         }
         
         final void setPos(float newPos) {
@@ -100,6 +105,43 @@ public class Map {
         void move(float distance) {
             float f = distance/PApplet.dist(nodes[nodeA].x, nodes[nodeA].y, nodes[nodeB].x, nodes[nodeB].y);
             setPos(pos + f);
+        }
+        
+        int getDirection() {
+            int deltaY = nodes[nodeB].y - nodes[nodeA].y;
+            int deltaX = nodes[nodeB].x - nodes[nodeA].x;
+            
+            if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                // vertical line
+                if (deltaY > 0) {
+                    return Down;
+                }
+                else {
+                    return Up;
+                }
+            }
+            else {
+                //  horizontal line
+                if (deltaX > 0) {
+                    return Right;
+                }
+                else {
+                    return Left;
+                }
+            }
+        }
+        
+        void flipDirection() {
+            int temp = nodeA;
+            nodeA = nodeB;
+            nodeB = temp;
+            pos = 1 - pos;
+        }
+        
+        final void set(int nodeA, int nodeB, float pos) {
+            this.nodeA = nodeA;
+            this.nodeB = nodeB;
+            setPos(pos);
         }
     }
     
