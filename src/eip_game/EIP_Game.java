@@ -11,8 +11,10 @@ public class EIP_Game extends PApplet {
 
     Model model;
     PImage mapImage;
-    PImage player;
-    PImage hallMonitor;
+    PImage playerSprite;
+    PImage hallMonitorSprite;
+    PImage hwSprite;
+    PImage gameOver;
 
     @Override
     public void settings() {
@@ -23,8 +25,10 @@ public class EIP_Game extends PApplet {
     public void setup() {
         model = new Model(width, height);
         mapImage = loadImage("GameScreen.png");
-        hallMonitor = loadImage("Hallmonitor.png");
-        player = loadImage("Player.png");
+        hallMonitorSprite = loadImage("Hallmonitor.png");
+        playerSprite = loadImage("Player.png");
+        hwSprite = loadImage("Homework.png");
+        gameOver = loadImage("gameover.png");
     }
 
     void drawNeighbor(int i, int dir) {
@@ -66,10 +70,17 @@ public class EIP_Game extends PApplet {
     void drawGameObjects() {
         pushStyle();
         imageMode(CENTER);
-        drawGameObject(model.player, player);
-        for (int i = 0; i < model.hallMonitors.length; ++i) {
-            drawGameObject(model.hallMonitors[i], hallMonitor);
+        
+        for (int i = 0; i < model.homework.length; ++i) {
+            drawGameObject(model.homework[i], hwSprite);
         }
+
+        for (int i = 0; i < model.hallMonitors.length; ++i) {
+            drawGameObject(model.hallMonitors[i], hallMonitorSprite);
+        }
+        
+        drawGameObject(model.player, playerSprite);
+
         popStyle();
     }
 
@@ -87,7 +98,7 @@ public class EIP_Game extends PApplet {
             }
             if (key == 'w') {
                 model.moveUp();
-            } 
+            }
             if (key == 's') {
                 model.moveDown();
             }
@@ -97,14 +108,21 @@ public class EIP_Game extends PApplet {
 
     @Override
     public void draw() {
-        checkInput();
-        model.update();
-
+        if (!model.gameOver) {
+            checkInput();
+            model.update();
+        }       
         image(mapImage, 0, 0);
 //        drawMapGraph();
 
         drawGameObjects();
-
+        
+        if (model.gameOver) {
+            pushStyle();
+            imageMode(CENTER);
+            image(gameOver, width/2, height/2);
+            popStyle();
+        }
     }
 
     public static void main(String[] args) {

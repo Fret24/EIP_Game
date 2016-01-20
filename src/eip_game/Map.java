@@ -22,7 +22,13 @@ public class Map {
             Left = 2,
             Right = 3;
             
-    
+    static int oppositeDir(int dir) {
+        if (dir == Up) return Down;
+        if (dir == Down) return Up;
+        if (dir == Left) return Right;
+        return Left;      
+    }
+            
     static class Node {
         static final int NO_PATH = -1;
         int x;
@@ -107,6 +113,10 @@ public class Map {
             setPos(pos + f);
         }
         
+        /**
+         * defines what direction the line is going. 
+         * @return 
+         */
         int getDirection() {
             int deltaY = nodes[nodeB].y - nodes[nodeA].y;
             int deltaX = nodes[nodeB].x - nodes[nodeA].x;
