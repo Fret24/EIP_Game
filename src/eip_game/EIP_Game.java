@@ -37,7 +37,7 @@ public class EIP_Game extends PApplet {
         println(devList);
         
         for (ControlDevice dev: controlIO.getDevices()) {
-            if (dev.getTypeName().equals("Keyboard")) {
+            if (dev.getTypeName().equals("Keyboard") && dev.getName().toLowerCase().contains("apple")) {
                 keyboard = dev;
                 keyboard.open();
                 break;
@@ -47,6 +47,16 @@ public class EIP_Game extends PApplet {
         if (keyboard != null) {
             println(keyboard.buttonsToText(""));
         }
+        if (keyboard == null) throw new AssertionError();
+        buttons = new ControlButton[8];
+        buttons[0] = keyboard.getButton("W");
+        buttons[1] = keyboard.getButton("S");
+        buttons[2] = keyboard.getButton("A");
+        buttons[3] = keyboard.getButton("D");
+        buttons[4] = keyboard.getButton("Up");
+        buttons[5] = keyboard.getButton("Down");
+        buttons[6] = keyboard.getButton("Left");
+        buttons[7] = keyboard.getButton("Right");
         
         model = new Model(width, height);
         mapImage = loadImage("GameScreen.png");
@@ -116,21 +126,10 @@ public class EIP_Game extends PApplet {
 //            g.save("/Users/Sam/Desktop/GameScreen.png");
 //        }
 
-        if (keyPressed) {
-            if (key == 'd') {
-                model.moveRight();
-            }
-            if (key == 'a') {
-                model.moveLeft();
-            }
-            if (key == 'w') {
-                model.moveUp();
-            }
-            if (key == 's') {
-                model.moveDown();
-            }
-
-        }
+        if (buttons[0].pressed() || buttons[4].pressed()) model.moveUp();
+        if (buttons[1].pressed() || buttons[5].pressed()) model.moveDown();
+        if (buttons[2].pressed() || buttons[6].pressed()) model.moveLeft();
+        if (buttons[3].pressed() || buttons[7].pressed()) model.moveRight();
     }
 
     @Override
