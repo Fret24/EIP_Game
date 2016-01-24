@@ -11,8 +11,12 @@ package eip_game;
  */
 public class Homework extends GameObject {
 
+    boolean isCollected;
+    
     public Homework(Model model, int nodeA, int nodeB, float pos) {
         super(model, nodeA, nodeB, pos);
+        
+        isCollected = false;        
     }
     
 }

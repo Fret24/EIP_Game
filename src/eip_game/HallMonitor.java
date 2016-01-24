@@ -10,6 +10,8 @@ package eip_game;
  * @author Sam
  */
 public class HallMonitor extends MovingGameObject {
+    
+    int HmStepSize = 4;
 
     public HallMonitor(Model model, int nodeA, int nodeB, float pos) {
         super(model, nodeA, nodeB, pos);
@@ -17,7 +19,7 @@ public class HallMonitor extends MovingGameObject {
 
     @Override
     void update() {
-        location.move(5);
+        location.move(HmStepSize);
         
         int n = location.closeToNode(5);
         

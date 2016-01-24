@@ -17,15 +17,18 @@ import processing.core.PApplet;
  * @author Sam
  */
 public class Model {
-    float collisionDist = 64;    
+    float collisionDist = 55;
+    float hwSpacing = 50;
     Map map;
     Player player;
     HallMonitor[] hallMonitors;
     Homework[] homework;
     boolean gameOver;
+    boolean youWin;
     
     Model(int width, int height) {
         gameOver = false;
+        youWin = false;
         map = new Map(width, height);
         
         player = new Player(this, 0, 1, 0);
@@ -36,10 +39,38 @@ public class Model {
             new HallMonitor(this, 11, 10, 0),
             new HallMonitor(this, 10, 7, 0)            
         };
-        homework = new Homework[] {
-            new Homework(this, 15, 14, 0)
-        };
+        homework = buildHomework();
     }
+    
+    void layoutHwOnEdge(int a, int b, List<Homework> hw) {
+        if (b == Map.Node.NO_PATH) {
+            return;
+        }
+        if (b < a) {
+            return;
+        }
+        float dist = PApplet.dist(map.nodes[a].x, map.nodes[a].y, map.nodes[b].x, map.nodes[b].y);
+        int q = (int)(dist/hwSpacing);
+        for (int i = 1; i <= q; ++i) {
+            hw.add(new Homework(this, a, b, (float)i/q));        
+        }
+            
+        
+
+    }
+    
+    Homework[] buildHomework() {
+        List<Homework> hw = new ArrayList<>();
+        
+        for (int i = 0; i < map.nodes.length; ++i) {
+            layoutHwOnEdge(i, map.nodes[i].dirs[Map.Up], hw);
+            layoutHwOnEdge(i, map.nodes[i].dirs[Map.Down], hw);
+            layoutHwOnEdge(i, map.nodes[i].dirs[Map.Left], hw);
+            layoutHwOnEdge(i, map.nodes[i].dirs[Map.Right], hw);            
+        }
+        return hw.toArray(new Homework[hw.size()]);
+    }
+    
     
     boolean testCollision(GameObject a, GameObject b) {
         float dist = PApplet.dist(a.location.x, a.location.y, b.location.x, b.location.y); 
@@ -53,8 +84,13 @@ public class Model {
             }
         }
         for (int i = 0; i < homework.length; ++i) {
-            if (testCollision(player, homework[i])) {
-                // to do
+            if (!homework[i].isCollected && testCollision(player, homework[i])) {
+                homework[i].isCollected = true;
+                player.numOfHw++;
+                if (player.numOfHw == homework.length) {
+                    youWin = true;
+                    gameOver = true;
+                }
             }
         }
         

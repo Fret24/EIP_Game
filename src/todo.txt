@@ -8,9 +8,6 @@ interactions between game objects
         HW gets collected
             player counts HW
             HW disappears 
-    player-HM
-        player gets "caught"
-            text saying "game over" appears and you have to restart
 
 sounds
 

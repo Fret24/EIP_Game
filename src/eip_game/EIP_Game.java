@@ -6,6 +6,8 @@
 package eip_game;
 
 import processing.core.*;
+import org.gamecontrolplus.*;
+
 
 public class EIP_Game extends PApplet {
 
@@ -15,6 +17,11 @@ public class EIP_Game extends PApplet {
     PImage hallMonitorSprite;
     PImage hwSprite;
     PImage gameOver;
+    
+    // Direct keyboard control
+    ControlIO controlIO;
+    ControlDevice keyboard = null;
+    ControlButton[] buttons;
 
     @Override
     public void settings() {
@@ -23,6 +30,24 @@ public class EIP_Game extends PApplet {
 
     @Override
     public void setup() {
+        // Set up direct keyboard access.
+        controlIO = ControlIO.getInstance(this);
+        
+        String devList = controlIO.deviceListToText("");
+        println(devList);
+        
+        for (ControlDevice dev: controlIO.getDevices()) {
+            if (dev.getTypeName().equals("Keyboard")) {
+                keyboard = dev;
+                keyboard.open();
+                break;
+            }
+        }
+        
+        if (keyboard != null) {
+            println(keyboard.buttonsToText(""));
+        }
+        
         model = new Model(width, height);
         mapImage = loadImage("GameScreen.png");
         hallMonitorSprite = loadImage("Hallmonitor.png");
@@ -72,7 +97,9 @@ public class EIP_Game extends PApplet {
         imageMode(CENTER);
         
         for (int i = 0; i < model.homework.length; ++i) {
-            drawGameObject(model.homework[i], hwSprite);
+            if (!model.homework[i].isCollected) {
+                drawGameObject(model.homework[i], hwSprite);
+            }            
         }
 
         for (int i = 0; i < model.hallMonitors.length; ++i) {
@@ -126,7 +153,11 @@ public class EIP_Game extends PApplet {
     }
 
     public static void main(String[] args) {
-        PApplet.main(eip_game.EIP_Game.class.getName());
+        PApplet.main(
+                new String[] {
+//                    "--display=2",
+                    eip_game.EIP_Game.class.getName()}
+        );
     }
 
 }

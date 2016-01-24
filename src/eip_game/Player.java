@@ -10,12 +10,15 @@ package eip_game;
  */
 public class Player extends MovingGameObject {
 
+    int numOfHw;
     int stepSize = 6;
     int howClose = 5;
     int changeDirsHowClose = 35;
 
     public Player(Model model, int nodeA, int nodeB, float pos) {
         super(model, nodeA, nodeB, pos);
+        
+        numOfHw = 0;
     }
 
     @Override
