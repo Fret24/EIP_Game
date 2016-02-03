@@ -11,7 +11,9 @@ package eip_game;
 public class Player extends MovingGameObject {
 
     int numOfHw;
-    int stepSize = 6;
+    float minStepSize = 6;
+    float maxStepSize = 8;    
+    float stepSize = 6;
     int howClose = 5;
     int changeDirsHowClose = 35;
 
@@ -19,11 +21,16 @@ public class Player extends MovingGameObject {
         super(model, nodeA, nodeB, pos);
         
         numOfHw = 0;
+        stepSize = minStepSize;
     }
 
     @Override
     void update() {
 
+    }
+    
+    void setStepSize(float factor) {
+        stepSize = (1 - factor) * minStepSize + factor * maxStepSize;
     }
 
     private void moveByStep(int dir) {

@@ -137,7 +137,8 @@ public class EIP_Game extends PApplet {
         if (!model.gameOver) {
             checkInput();
             model.update();
-        }       
+        } 
+        
         image(mapImage, 0, 0);
 //        drawMapGraph();
 

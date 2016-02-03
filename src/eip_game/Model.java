@@ -99,7 +99,12 @@ public class Model {
     void update() {
         testCollisions();
         
+        float factor = (float)player.numOfHw / homework.length;
+        
+        player.setStepSize(factor);
+        
         for (int i = 0; i < hallMonitors.length; ++i) {
+            hallMonitors[i].setStepSize(factor);
             hallMonitors[i].update();
         }
     }
