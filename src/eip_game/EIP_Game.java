@@ -25,7 +25,8 @@ public class EIP_Game extends PApplet {
 
     @Override
     public void settings() {
-        size(1280, 800, P2D);
+        fullScreen(P2D);
+//        size(1280, 800, P2D);
     }
 
     @Override
@@ -137,7 +138,12 @@ public class EIP_Game extends PApplet {
         if (!model.gameOver) {
             checkInput();
             model.update();
-        } 
+        }
+        else {
+            if (keyPressed && key == ' ') {
+                model = new Model(width, height);
+            }
+        }
         
         image(mapImage, 0, 0);
 //        drawMapGraph();
