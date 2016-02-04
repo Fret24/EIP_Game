@@ -35,7 +35,7 @@ public class EIP_Game extends PApplet {
         controlIO = ControlIO.getInstance(this);
         
         String devList = controlIO.deviceListToText("");
-        println(devList);
+//        println(devList);
         
         for (ControlDevice dev: controlIO.getDevices()) {
             if (dev.getTypeName().equals("Keyboard") && dev.getName().toLowerCase().contains("apple")) {
@@ -46,7 +46,7 @@ public class EIP_Game extends PApplet {
         }
         
         if (keyboard != null) {
-            println(keyboard.buttonsToText(""));
+//            println(keyboard.buttonsToText(""));
         }
         if (keyboard == null) throw new AssertionError();
         buttons = new ControlButton[8];
