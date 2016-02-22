@@ -8,7 +8,6 @@ package eip_game;
 import processing.core.*;
 import org.gamecontrolplus.*;
 
-
 public class EIP_Game extends PApplet {
 
     Model model;
@@ -16,7 +15,7 @@ public class EIP_Game extends PApplet {
     PImage hwSprite;
     PImage youlost;
     PImage youwin;
-    
+
     PImage backgroundImage;
     PImage wolfBackground;
     PImage schoolBackground;
@@ -24,7 +23,7 @@ public class EIP_Game extends PApplet {
     PImage playerImage;
     PImage badPlayer;
     PImage goodPlayer;
-    
+
     // Direct keyboard control
     ControlIO controlIO;
     ControlDevice keyboard = null;
@@ -32,7 +31,6 @@ public class EIP_Game extends PApplet {
 
     @Override
     public void settings() {
-//        fullScreen(P2D);
         size(1280, 800, P2D);
     }
 
@@ -40,22 +38,24 @@ public class EIP_Game extends PApplet {
     public void setup() {
         // Set up direct keyboard access.
         controlIO = ControlIO.getInstance(this);
-        
+
         String devList = controlIO.deviceListToText("");
 //        println(devList);
-        
-        for (ControlDevice dev: controlIO.getDevices()) {
+
+        for (ControlDevice dev : controlIO.getDevices()) {
             if (dev.getTypeName().equals("Keyboard") && dev.getName().toLowerCase().contains("apple")) {
                 keyboard = dev;
                 keyboard.open();
                 break;
             }
         }
-        
+
         if (keyboard != null) {
 //            println(keyboard.buttonsToText(""));
         }
-        if (keyboard == null) throw new AssertionError();
+        if (keyboard == null) {
+            throw new AssertionError();
+        }
         buttons = new ControlButton[8];
         buttons[0] = keyboard.getButton("W");
         buttons[1] = keyboard.getButton("S");
@@ -65,19 +65,19 @@ public class EIP_Game extends PApplet {
         buttons[5] = keyboard.getButton("Down");
         buttons[6] = keyboard.getButton("Left");
         buttons[7] = keyboard.getButton("Right");
-        
+
         model = new Model(width, height);
         hallMonitorSprite = loadImage("Hallmonitor.png");
         hwSprite = loadImage("Homework.png");
         youwin = loadImage("you win.png");
         youlost = loadImage("you lost.png");
-        
+
         schoolBackground = loadImage("GameScreen.png");
         wolfBackground = loadImage("WolfBoyNeonPink icon.png");
-        
+
         goodPlayer = loadImage("Player.png");
         badPlayer = loadImage("BadPlayer.png");
-        
+
         backgroundImage = schoolBackground;
         playerImage = goodPlayer;
     }
@@ -121,17 +121,17 @@ public class EIP_Game extends PApplet {
     void drawGameObjects() {
         pushStyle();
         imageMode(CENTER);
-        
+
         for (int i = 0; i < model.homework.length; ++i) {
             if (!model.homework[i].isCollected) {
                 drawGameObject(model.homework[i], hwSprite);
-            }            
+            }
         }
 
         for (int i = 0; i < model.hallMonitors.length; ++i) {
             drawGameObject(model.hallMonitors[i], hallMonitorSprite);
         }
-        
+
         drawGameObject(model.player, playerImage);
 
         popStyle();
@@ -142,10 +142,18 @@ public class EIP_Game extends PApplet {
 //            g.save("/Users/Sam/Desktop/GameScreen.png");
 //        }
 
-        if (buttons[0].pressed() || buttons[4].pressed()) model.moveUp();
-        if (buttons[1].pressed() || buttons[5].pressed()) model.moveDown();
-        if (buttons[2].pressed() || buttons[6].pressed()) model.moveLeft();
-        if (buttons[3].pressed() || buttons[7].pressed()) model.moveRight();
+        if (buttons[0].pressed() || buttons[4].pressed()) {
+            model.moveUp();
+        }
+        if (buttons[1].pressed() || buttons[5].pressed()) {
+            model.moveDown();
+        }
+        if (buttons[2].pressed() || buttons[6].pressed()) {
+            model.moveLeft();
+        }
+        if (buttons[3].pressed() || buttons[7].pressed()) {
+            model.moveRight();
+        }
     }
 
     @Override
@@ -153,56 +161,49 @@ public class EIP_Game extends PApplet {
         if (!model.gameOver) {
             checkInput();
             model.update();
-            
+
             if (keyPressed && key == '`') {
-               if (backgroundImage == wolfBackground) {
-                   backgroundImage = schoolBackground;
-               } 
-               else {
-                   backgroundImage = wolfBackground;
-               }
-               
-               if (playerImage == badPlayer) {
-                   playerImage = goodPlayer;
-               } 
-               else {
-                   playerImage = badPlayer;
-               }
+                if (backgroundImage == wolfBackground) {
+                    backgroundImage = schoolBackground;
+                } else {
+                    backgroundImage = wolfBackground;
+                }
+
+                if (playerImage == badPlayer) {
+                    playerImage = goodPlayer;
+                } else {
+                    playerImage = badPlayer;
+                }
             }
-        } 
-        else {
-            if (keyPressed && key == ' ') {
-                model = new Model(width, height);
-                backgroundImage = schoolBackground;
-                playerImage = goodPlayer;
-            }
+        } else if (keyPressed && key == ' ') {
+            model = new Model(width, height);
+            backgroundImage = schoolBackground;
+            playerImage = goodPlayer;
         }
-        
+
         image(backgroundImage, 0, 0);
 //        drawMapGraph();
 
         drawGameObjects();
-        
+
         if (model.gameOver) {
             pushStyle();
             imageMode(CENTER);
             if (model.youWin) {
-                image(youwin, width/2, height/2);    
+                image(youwin, width / 2, height / 2);
+            } else {
+                image(youlost, width / 2, height / 2);
             }
-            else {
-            image(youlost, width/2, height/2);                
-            } 
             popStyle();
         }
     }
 
     public static void main(String[] args) {
         PApplet.main(
-                new String[] {
-//                    "--display=2",
+                new String[]{
+                    //                    "--display=2",
                     eip_game.EIP_Game.class.getName()}
         );
     }
 
-    
 }
