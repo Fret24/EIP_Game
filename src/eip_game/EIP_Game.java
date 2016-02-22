@@ -28,10 +28,12 @@ public class EIP_Game extends PApplet {
     ControlIO controlIO;
     ControlDevice keyboard = null;
     ControlButton[] buttons;
+    int evilKeyHoldoff = 0;
 
     @Override
     public void settings() {
-        size(1280, 800, P2D);
+//        size(1280, 800, P2D);
+        fullScreen(P2D);
     }
 
     @Override
@@ -162,7 +164,8 @@ public class EIP_Game extends PApplet {
             checkInput();
             model.update();
 
-            if (keyPressed && key == '`') {
+            if (keyPressed && key == '`' && evilKeyHoldoff == 0) {
+                evilKeyHoldoff = 10;
                 if (backgroundImage == wolfBackground) {
                     backgroundImage = schoolBackground;
                 } else {
@@ -173,6 +176,11 @@ public class EIP_Game extends PApplet {
                     playerImage = goodPlayer;
                 } else {
                     playerImage = badPlayer;
+                }
+            }
+            else {
+                if (evilKeyHoldoff > 0) {
+                    --evilKeyHoldoff;
                 }
             }
         } else if (keyPressed && key == ' ') {
