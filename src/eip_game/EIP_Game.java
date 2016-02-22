@@ -12,11 +12,18 @@ import org.gamecontrolplus.*;
 public class EIP_Game extends PApplet {
 
     Model model;
-    PImage mapImage;
-    PImage playerSprite;
     PImage hallMonitorSprite;
     PImage hwSprite;
-    PImage gameOver;
+    PImage youlost;
+    PImage youwin;
+    
+    PImage backgroundImage;
+    PImage wolfBackground;
+    PImage schoolBackground;
+
+    PImage playerImage;
+    PImage badPlayer;
+    PImage goodPlayer;
     
     // Direct keyboard control
     ControlIO controlIO;
@@ -34,7 +41,7 @@ public class EIP_Game extends PApplet {
         controlIO = ControlIO.getInstance(this);
         
         String devList = controlIO.deviceListToText("");
-        println(devList);
+//        println(devList);
         
         for (ControlDevice dev: controlIO.getDevices()) {
             if (dev.getTypeName().equals("Keyboard") && dev.getName().toLowerCase().contains("apple")) {
@@ -45,7 +52,7 @@ public class EIP_Game extends PApplet {
         }
         
         if (keyboard != null) {
-            println(keyboard.buttonsToText(""));
+//            println(keyboard.buttonsToText(""));
         }
         if (keyboard == null) throw new AssertionError();
         buttons = new ControlButton[8];
@@ -59,11 +66,19 @@ public class EIP_Game extends PApplet {
         buttons[7] = keyboard.getButton("Right");
         
         model = new Model(width, height);
-        mapImage = loadImage("GameScreen.png");
         hallMonitorSprite = loadImage("Hallmonitor.png");
-        playerSprite = loadImage("Player.png");
         hwSprite = loadImage("Homework.png");
-        gameOver = loadImage("gameover.png");
+        youwin = loadImage("you win.png");
+        youlost = loadImage("you lost.png");
+        
+        schoolBackground = loadImage("GameScreen.png");
+        wolfBackground = loadImage("WolfBoyNeonPink icon.png");
+        
+        goodPlayer = loadImage("Player.png");
+        badPlayer = loadImage("BadPlayer.png");
+        
+        backgroundImage = schoolBackground;
+        playerImage = goodPlayer;
     }
 
     void drawNeighbor(int i, int dir) {
@@ -116,7 +131,7 @@ public class EIP_Game extends PApplet {
             drawGameObject(model.hallMonitors[i], hallMonitorSprite);
         }
         
-        drawGameObject(model.player, playerSprite);
+        drawGameObject(model.player, playerImage);
 
         popStyle();
     }
@@ -137,9 +152,32 @@ public class EIP_Game extends PApplet {
         if (!model.gameOver) {
             checkInput();
             model.update();
+            
+            if (keyPressed && key == '`') {
+               if (backgroundImage == wolfBackground) {
+                   backgroundImage = schoolBackground;
+               } 
+               else {
+                   backgroundImage = wolfBackground;
+               }
+               
+               if (playerImage == badPlayer) {
+                   playerImage = goodPlayer;
+               } 
+               else {
+                   playerImage = badPlayer;
+               }
+            }
         } 
+        else {
+            if (keyPressed && key == ' ') {
+                model = new Model(width, height);
+                backgroundImage = schoolBackground;
+                playerImage = goodPlayer;
+            }
+        }
         
-        image(mapImage, 0, 0);
+        image(backgroundImage, 0, 0);
 //        drawMapGraph();
 
         drawGameObjects();
@@ -147,7 +185,12 @@ public class EIP_Game extends PApplet {
         if (model.gameOver) {
             pushStyle();
             imageMode(CENTER);
-            image(gameOver, width/2, height/2);
+            if (model.youWin) {
+                image(youwin, width/2, height/2);    
+            }
+            else {
+            image(youlost, width/2, height/2);                
+            } 
             popStyle();
         }
     }
@@ -160,4 +203,5 @@ public class EIP_Game extends PApplet {
         );
     }
 
+    
 }
