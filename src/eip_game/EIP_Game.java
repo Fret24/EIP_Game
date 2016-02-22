@@ -32,6 +32,7 @@ public class EIP_Game extends PApplet {
 
     @Override
     public void settings() {
+//        fullScreen(P2D);
         size(1280, 800, P2D);
     }
 
